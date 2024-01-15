@@ -1,0 +1,6 @@
+<p>loader works!</p>
+<div *ngIf="loaderService.loaderState$ | async" class="loader-overlay">
+    <div class="loader-content">
+        <div class="loader-spinner"></div>
+    </div>
+</div>

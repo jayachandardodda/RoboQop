@@ -1,0 +1,318 @@
+<div class="card px-4">
+    <div class="card-header">
+        <h3 style="text-align: center;" class="text-muted">Index Tracking</h3>
+    </div>
+    <mat-tab-group #tabGroup class="stepper-height" [selectedIndex]="selectedTabIndex"
+        (selectedIndexChange)="tabIndexChanged($event)" [disableRipple]="true">
+        <mat-tab label="Index Tracking">
+            <!-- <div>
+                          <h3 class="marg0 text-center">Line Chart</h3>
+                        </div> -->
+            <form [formGroup]="form" class="form form-register">
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="backends" class="col-form-label font-weight-bold">
+                            Backend
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Solver" placement="right"
+                                    container="body" id="eftoolTip"></i></span>
+                        </label>
+                        <select (change)="backEnd($event)" formGroupName="backends" class="form-control" required>
+                            <option *ngFor="let data of backend" [ngValue]="data">{{data}}</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="benchmark" class="col-form-label font-weight-bold">
+                            Index
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Index which needs to be tracked" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <select name="benchmark" formGroupName="benchmark" class="form-control" required>
+                            <option selected value="nasdaq_100">NASDAQ-100</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="lb" class="col-form-label font-weight-bold">
+                            Lower Bound
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Min allocated weight for every stock" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" min="0" max="100" step="1" formControlName="lb" class=" form-control">
+
+                        <div *ngIf="form.get('lb').invalid " class="text-danger">
+                            <div *ngIf="form.get('lb').errors?.['required']">
+                                Missing Field
+                            </div>
+                            <div *ngIf="form.get('lb').errors?.min || form.get('lb').errors?.max">
+                                Invalid value. Lower Bound should be between 0 and 100.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="ub" class="col-form-label font-weight-bold">
+                            Upper Bound
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Max allocated weight for every stock" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" min="1" max="100" step="1" formControlName="ub" class="form-control"
+                            required>
+                        <div *ngIf="form.get('ub').invalid " class="text-danger">
+                            <div *ngIf="form.get('ub').errors?.['required']">
+                                Missing Field
+                            </div>
+                            <div *ngIf="form.get('ub').errors?.min || form.get('ub').errors?.max">
+                                Invalid value. Upper Bound should be between 1 and 100.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="startDate" class="col-form-label font-weight-bold">
+                            Start Date
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Tracking Start Date"
+                                    placement="right" container="body" id="eftoolTip"></i></span>
+                        </label>
+                        <input type="date" id="startDate" formControlName="start_date" (change)="date('start')"
+                            class="datepicker form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="endDate" class="col-form-label font-weight-bold">
+                            End Date
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Tracking End Date"
+                                    placement="right" container="body" id="eftoolTip"></i></span>
+                        </label>
+                        <input type="date" id="endDate" formControlName="end_date" (change)="date('end')"
+                            class="datepicker form-control">
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <div *ngIf="start_weekend" class="alert alert-danger p-1" role="alert">
+                            Start Date cannot be weekends.
+                        </div>
+                    </div>
+
+                    <div class="col-6">
+                        <div *ngIf="end_weekend" class="alert alert-danger p-1" role="alert">
+                            End Date cannot be weekends.
+                        </div>
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="lamda" class="col-form-label font-weight-bold">
+                            Enhancement Factor
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="0:No enhancement , 1:Max Enhancement" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" min="0" max="1" step="0.01" formControlName="lam" class=" form-control">
+                        <div *ngIf="form.get('lam').invalid " class="text-danger">
+                            <div *ngIf="form.get('lam').errors?.['required']">
+                                Missing Field
+                            </div>
+                            <div *ngIf="form.get('lam').errors?.min || form.get('lam').errors?.max">
+                                Invalid value. Value should be between 0 and 1.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <label for="endDate" class="col-form-label font-weight-bold">
+                            Total Stocks
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Total no.of stocks that must be there in portfolio" placement="right"
+                                    container="body" id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" formControlName="total_stocks" class="form-control" required>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="lb" class="col-form-label font-weight-bold">
+                            Min Assets
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Min allocated weight for every stock" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" min="0" max="100" step="1" formControlName="lb" class=" form-control">
+                    </div>
+                    <div class="col-6">
+                        <label for="ub" class="col-form-label font-weight-bold">
+                            Max Assets
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Max allocated weight for every stock" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <input type="number" min="1" max="100" step="1" formControlName="" class="form-control"
+                            required>
+                    </div>
+                </div>
+
+                <div class="row d-flex justify-content-between">
+                    <div class="col-6">
+                        <label for="lb" class="col-form-label font-weight-bold">
+                            Startegy
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                                    ngbTooltip="Min allocated weight for every stock" placement="right" container="body"
+                                    id="eftoolTip"></i></span>
+                        </label>
+                        <select name="benchmark" formGroupName="benchmark" class="form-control" required>
+                            <option selected value="nasdaq_100">L2 Norm</option>
+                            <option selected value="nasdaq_100">Tracking Error</option>
+                        </select>
+                    </div>
+                    <div class="col-6">
+                        <label for="ub" class="col-form-label font-weight-bold">
+                            Token
+                            <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="enter the token"
+                                    placement="right" container="body" id="eftoolTip"></i></span>
+                        </label>
+                        <input type="text" formControlName="token" class="form-control" required>
+                    </div>
+                </div>
+
+                <div *ngIf="true" class="row form-group">
+                    <div class="table-responsive">
+                        <div class="cont" style="margin-top: 5%">
+                            <table class="table table-bordered table-hover">
+                                <thead class="table-active">
+                                    <tr>
+                                        <th class="col-3">Stocks</th>
+                                        <!-- <th class="col-2">Transactional Weights</th> -->
+                                        <!--th class="col-2">Price</th-->
+                                        <th class="col-2"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <ng-container formArrayName="TransactionLimit">
+                                        <tr *ngFor="let transactionLimit of TransactionLimit.controls; let i=index"
+                                            [formGroup]="transactionLimit">
+                                            <td><input formControlName="Stocks" (click)="clickedArrayTL($event);"
+                                                    (keyup)="autoComplete(i,$event)" class="form-control"
+                                                    id="autoComplete" (change)="autoComplete($event);"
+                                                    list="autocompletestock">
+                                                <datalist *ngIf="clickedTL" id="autocompletestock">
+                                                    <option *ngFor="let ticker of stockList" [value]="ticker">
+                                                        {{ticker}}
+                                                    </option>
+                                                </datalist>
+                                            </td>
+                                            <!-- Allocation -->
+                                            <!-- <td><input type="number" class="form-control" formControlName="Weights"
+                                                    size="4">
+                                            </td> -->
+                                            <td
+                                                (click)="deleteHoldingTL(i);CalculateLeftAmount(form.controls['investment_amount'].value)">
+                                                <i class="fa fa-trash fa-2x"></i>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td (click)="addHoldingTL()">
+                                                <i class="fa fa-plus fa-2x"></i>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <br>
+                <br>
+
+
+                <div class="d-flex justify-content-end">
+                    <button type="submit" class="btn btn-primary" (click)="index_track()">Submit</button>
+                </div>
+                <br>
+            </form>
+        </mat-tab>
+        <mat-tab label="Pie Chart">
+            <div class="row">
+                <div class="col" *ngIf="resultPage">
+                    <br>
+                    <br>
+                    <h4 style="color:black;margin-left:13%;">Portfolio Weights</h4>
+                    <div>
+                        <google-chart #chart [type]="pieChartData.type" [data]="pieChartData.data"
+                            [options]="pieChartData.options" [width]="pieChartData.width"
+                            [height]="pieChartData.height">
+                        </google-chart>
+                    </div>
+                </div>
+            </div>
+            <!-- <div>
+                <google-chart *ngIf="resultPage" [type]="lineChartData.type" [data]="lineChartData.data"
+                    [columns]="lineChartData.columnNames" [options]="lineChartData.options"
+                    [width]="lineChartData.width" [height]="lineChartData.height">
+                </google-chart>
+            </div>
+            <div style="display: flex; justify-content: center; align-items: center;">
+                <h5 style="margin-right: 10px;">
+                    Tracking Error(%)
+                    <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle"
+                            ngbTooltip="Standard deviation between portfolio returns and index returns"
+                            placement="bottom" container="body" id="eftoolTip"></i></span>
+                    :
+                </h5>
+                <h5>{{ trackingError }}</h5>
+            </div> -->
+        </mat-tab>
+        <mat-tab label="Portfolio Metrics">
+            <div class="row">
+                <!-- <div class="col" *ngIf="resultPage">
+                    <br>
+                    <br>
+                    <h4 style="color:black;margin-left:13%;">Portfolio Weights</h4>
+                    <div>
+                        <google-chart #chart [type]="pieChartData.type" [data]="pieChartData.data"
+                            [options]="pieChartData.options" [width]="pieChartData.width"
+                            [height]="pieChartData.height">
+                        </google-chart>
+                    </div>
+                </div> -->
+                <!-- <div class="col" *ngIf="resultPage" [ngStyle]="{'height': '550px', 'overflow-y': 'scroll'}">
+                    <br>
+                    <br>
+                    <table class="table align-middle bg-white table-bordered">
+                        <thead class="bg-light" style="position: sticky; top: 0;">
+                            <tr>
+                                <th class="font-size-custom">
+                                    Stock Ticker
+                                </th>
+                                <th class="font-size-custom">
+                                    Weight %
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of stocks">
+                                <td>
+                                    {{row[0]}}
+                                </td>
+                                <td>
+                                    {{row[1]}}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> -->
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+</div>
+<!-- Loader Overlay -->
+<div *ngIf="loader.loaderState$ | async" class="loader-overlay">
+    <div class="loader-content">
+        <mat-progress-spinner [diameter]="60" class="loader-spinner" color="primary"
+            mode="indeterminate"></mat-progress-spinner>
+    </div>
+</div>

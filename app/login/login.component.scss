@@ -1,0 +1,14 @@
+.divider:after,
+.divider:before {
+content: "";
+flex: 1;
+height: 1px;
+background: #eee;
+}
+
+.pad-top{
+    padding-top: 8rem;
+}
+.pad-top-signup{
+    padding-top: 3rem;
+}

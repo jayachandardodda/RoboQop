@@ -1,0 +1,79 @@
+<div class="container h-100" [class.pad-top]="isLoginPage" [class.pad-top-signup]="!isLoginPage">
+  <div class="row d-flex align-items-center justify-content-center h-100">
+    <div class="col-md-8 col-lg-7 col-xl-6">
+      <img alt="Login V2" class="img-fluid" src="assets/pages/login-v2.svg">
+    </div>
+    <div class="card col-md-4 col-lg-4 col-xl-4 offset-xl-1 bg-light">
+      <div *ngIf="isLoginPage;then isLogin;else isSignUp"></div>
+      <ng-template #isLogin>
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <!-- Email input -->
+          <div *ngIf="signInError && signInError.length>0 then error else valid" >
+          </div>
+          <ng-template #error > <br><li style="color: #dc3545;">You have entered an invalid username or password</li><br></ng-template>
+          <ng-template #valid><br><br><br></ng-template>
+          <div class="form-outline mb-3">
+            <label class="form-label" for="userNameInputId">User Name</label>
+            <input placeholder="Username" formControlName="email" type="email" id="userNameInputId" class="form-control" />
+
+          </div>
+          <!-- Password input -->
+          <div class="form-outline mb-3">
+            <label class="form-label" for="passwordInputId">Password</label>
+            <input placeholder="Password" formControlName="password" type="password" id="passwordInputId"
+              class="form-control" />
+          </div>
+
+          <!-- 2 column grid layout for inline styling -->
+          <div class="row mb-3">
+            <div class="col d-flex justify-content-center">
+              <!-- Checkbox -->
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" id="chkRememberMeId" checked />
+                <label class="form-check-label" for="chkRememberMeId"> Remember me </label>
+              </div>
+            </div>
+
+            <div class="col">
+              <!-- Simple link -->
+              <a href="#!">Forgot password?</a>
+            </div>
+          </div>
+
+          <div class="d-grid gap-2">
+            <button type="submit" class="btn btn-primary">Sign in</button>
+          </div>
+          <!-- Submit button -->
+          <br>
+
+          <!-- Register buttons -->
+          <div class="text-center">
+            <p>Not a member? <a (click)="onRegisterClick()"  href="#!" > Create an Account</a></p>
+            <p>or sign up with:</p>
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="bi bi-facebook"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="bi bi-google"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="bi bi-instagram"></i>
+            </button>
+
+            <button type="button" class="btn btn-link btn-floating mx-1">
+              <i class="bi bi-twitter"></i>
+            </button>
+            <br>
+            <br>
+          </div>
+        </form>
+      </ng-template>
+      <ng-template #isSignUp>
+        <app-signup (signUpEvent)="addItem($event)"></app-signup>
+      </ng-template>
+
+    </div>
+  </div>
+</div>

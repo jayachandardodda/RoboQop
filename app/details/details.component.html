@@ -1,0 +1,181 @@
+
+<div class="card py-5 mx-auto">
+    <div class="container">
+      <form #myform="ngForm" class="form form-register">
+
+        <div>
+          <h1 class="text-center" style="color: black;">Portfolio Details</h1>
+          <div class="row d-flex justify-content-around">
+            <div class="col-5">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Initial Balance
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.initial_amount}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Annual Return
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.annual_return}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Final Balance
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.final_balance}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Annual Volatility
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.annual_volatility}}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+                </tbody>
+              </table>
+            </div>
+            <div class="col-5">
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      CAGR (Annual)
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.cagr}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Maximum Loss
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.maximum_loss}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Sharpe Ratio
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.sharpe_ratio}}
+                    </td>
+                  </tr>
+                  <tr>
+                    <th class="col-6 font-size-custom">
+                      Best Month
+                    </th>
+                    <td class="col-6 font-size-custom">
+                      {{holding.best_month}}
+                    </td>
+                  </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        
+
+        <br>
+        <h1 class="text-center" style="color:black;">Line Chart</h1>
+        <div class="row">
+          <div class="dropdown col-3">
+            <button class="row btn btn-sm btn-outline-secondary dropdown-toggle" type="button" style="margin-left: 20px" data-bs-toggle="dropdown" aria-expanded="false">
+              <span><i class="fa fa-search" aria-hidden="true"></i>&nbsp;compare to</span> 
+            </button>
+            <ul class="dropdown-menu">
+              <li *ngFor="let option of indexList" >
+                <a class="dropdown-item" data-bs-target="#{{option}}" (click)="onOptionSelected(option)">{{option}}</a>
+              </li>
+            </ul>
+          </div>
+
+          <div class="col-3" *ngFor="let selectedOption of selectedOptions">
+            <button [id]="selectedOption" class=" btn btn-secondary btn-sm col-3" (click)="removeIndex(selectedOption)"> <span>{{selectedOption}}<i class="fa fa-close"></i></span></button>
+          </div>
+          
+          <google-chart #chart1 id="line" [type]="chartData.type" [data]="chartData.data" [columns]="chartData.columnNames"
+            [options]="chartData.options">
+          </google-chart>
+        </div>
+      
+        <br>
+        <div class="container">
+        <nav class="nav nav-pills nav-fill">
+          <a class="nav-item nav-link" (click)="signals()" [ngClass]="{'active':selectedButton==='signals'}">Portfolio
+            Signals</a>
+          <a class="nav-item nav-link" (click)="details()" [ngClass]="{'active':selectedButton==='details'}">Holding
+            Details</a>
+        </nav>
+        <table *ngIf="selectedButton === 'details'" class="table align-middle bg-white table-bordered">
+          <thead class="bg-light">
+            <tr>
+              <th *ngFor="let col of holdingDetailsFields">
+                {{col.header}}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of holdingsData">
+              <td *ngFor="let col of holdingDetailsFields">
+                {{row[col.field]}}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <table *ngIf="selectedButton === 'signals'" class="table bg-white">
+          <thead class="bg-light">
+            <tr>
+              <th *ngFor="let col of signalTableFields">
+                {{col.header}}
+              </th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let signal of signal">
+              <td>
+                {{signal.date}}
+              </td>
+              <td>
+                {{signal.stock}}
+              </td>
+              <td>
+                {{signal.currrent_price}}
+              </td>
+              <td>
+                {{signal.signal}}
+              </td>
+              <td>
+                {{signal.volume}}
+              </td>
+              <td>
+                {{signal.orderprice}}
+              </td>
+              <td>
+                <i class="fa fa-arrow-right" aria-hidden="true"></i>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+      </form>
+      <!-- Basic Alerts end -->
+    </div>
+  
+</div>

@@ -1,0 +1,145 @@
+<div class="card">
+  <div class="row">
+    <div class="col">
+      <div class="card-body pb-1">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="row">
+            <div class="col-6">
+              <label for="portfolioName" class="form-label font-weight-bold">Portfolio Name
+                <span class="text-danger">*</span>
+              </label>
+              <input formControlName="portfolioName" type="text" id="form2Example1" class="form-control" />
+              <div
+                *ngIf="form.get('portfolioName').invalid && (form.get('portfolioName').dirty || form.get('portfolioName').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('portfolioName').errors?.['required']">
+                  Portfolio Name is required.
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <label for="fullName" class="form-label font-weight-bold">Full Name
+                <!-- <span class="text-danger">*</span> -->
+              </label>
+              <input formControlName="fullName" type="text" id="form2Example1" class="form-control" />
+              <div *ngIf="form.get('fullName').invalid && (form.get('fullName').dirty || form.get('fullName').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('fullName').errors?.['required']">
+                  Full Name is required.
+                </div>
+                <div *ngIf="form.get('fullName').errors?.['pattern']">
+                  Full Name must not have special characters.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <label for="familyName" class="form-label font-weight-bold">Family Name
+                <!-- <span
+                  class="text-danger">*</span> -->
+                </label>
+              <input formControlName="familyName" type="text" id="form2Example1" class="form-control" />
+              <div
+                *ngIf="form.get('familyName').invalid && (form.get('familyName').dirty || form.get('familyName').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('familyName').errors?.['required']">
+                  Family Name is required.
+                </div>
+                <div *ngIf="form.get('familyName').errors?.['pattern']">
+                  Family Name must not have special characters.
+                </div>
+              </div>
+
+            </div>
+            <div class="col-6">
+              <label for="emailId" class="form-label font-weight-bold">Email Id
+                <!-- <span
+                  class="text-danger">*</span> -->
+                </label>
+              <input formControlName="emailId" type="text" id="form2Example1" class="form-control" />
+              <div *ngIf="form.get('emailId').invalid && (form.get('emailId').dirty || form.get('emailId').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('emailId').errors?.['required']">
+                  Email Id is required.
+                </div>
+                <div *ngIf="form.get('emailId').errors?.['email']">
+                  Invalid Email Id.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4">
+              <label for="city" class="form-label font-weight-bold">City
+                <!-- <span class="text-danger">*</span> -->
+              </label>
+              <input formControlName="city" type="text" id="form2Example1" class="form-control" />
+              <div *ngIf="form.get('city').invalid && (form.get('city').dirty || form.get('city').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('city').errors?.['required']">
+                  City is required.
+                </div>
+                <div *ngIf="form.get('city').errors?.['pattern']">
+                  Invaild City Name.
+                </div>
+              </div>
+            </div>
+            <div class="col-4">
+              <label for="state" class="form-label font-weight-bold">State
+                <!-- <span class="text-danger">*</span> -->
+              </label>
+              <input formControlName="state" type="text" id="form2Example1" class="form-control" />
+              <div *ngIf="form.get('state').invalid && (form.get('state').dirty || form.get('state').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('state').errors?.['required']">
+                  State is required.
+                </div>
+                <div *ngIf="form.get('state').errors?.['pattern']">
+                  Invaild State Name.
+                </div>
+              </div>
+
+            </div>
+            <div class="col-4">
+              <label for="pincode" class="form-label font-weight-bold">PIN
+                <span class="text-danger">*</span>
+              </label>
+              <input formControlName="pincode" type="number" id="form2Example1" class="form-control" />
+              <div *ngIf="form.get('pincode').invalid && (form.get('pincode').dirty || form.get('pincode').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('pincode').errors?.['required']">
+                  PIN is required.
+                </div>
+                <div *ngIf="form.get('pincode').errors?.['pattern']">
+                  Invaild PIN.
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <label for="address" class="form-label font-weight-bold">Address
+                <!-- <span class="text-danger">*</span> -->
+              </label>
+              <textarea [rows]="5" [cols]="30" pInputTextarea autoResize="autoResize" class="form-control"
+                style="background-color: rgb(248, 248, 248) !important;" formControlName="address" ></textarea>
+              <div *ngIf="form.get('address').invalid && (form.get('address').dirty || form.get('address').touched)"
+                class="text-danger">
+                <div *ngIf="form.get('address').errors?.['required']">
+                  Address is required.
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- <div class="row mt-2  ">
+            <div class="col-12" style="text-align: center;">
+              <button type="submit" [disabled]="!form.valid" class="btn btn-primary">ADD HOLDINGS</button>
+            </div>
+          </div> -->
+          <br>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<div class="result-container">
+  <!-- <div class="sidebar mx-2">
+      <p-panelMenu [model]="menuItems" [style]="{ width: '250px' }"></p-panelMenu>
+  </div> -->
+  <div class="main-content mx-2" style="width: 100%; height: 100vh;">
+      <mat-tab-group>
+          <mat-tab label="Efficient Frontier Graph">
+            <google-chart
+              [type]="'ComboChart'"
+              [data]="this.optimizeBackend.efOutput"
+              [columns]="this.optimizeBackend.efChartColumns"
+              [options]="chartOptions"
+              [height]="400"
+              [width]="600"
+            ></google-chart>
+          </mat-tab>
+          <mat-tab label="Efficient Frontier Table">
+            <div class="text-center">
+              <table class="table bg-white table-bordered" style="width: 80%;">
+                <thead class="bg-light">
+                  <tr>
+                    <th> Sr No</th> <!-- Empty cell for the top-left corner -->
+                    <!-- <th *ngFor="let asset of this.optimizeBackend.givenAssets;">{{asset}}</th> -->
+                    <th>Std Deviation (%)</th>
+                    <th>Returns (%)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let portfolio of this.optimizeBackend.efOutput.slice(0,this.optimizeBackend.efOutput.length-2); let i=index">
+                    <!-- <th>{{ rowLabel }}</th> -->
+                    <td>{{i}}</td>
+                    <!-- <td *ngFor="let asset of this.optimizeBackend.givenAssets; let j = index">{{asset}}</td> -->
+                    <td>
+                      <!-- Use the rowLabel and columnLabel to access the corresponding data -->
+                      {{ portfolio[0] }}
+                    </td>
+                    <td>{{ portfolio[1] }}</td>
+                  </tr>
+                  <tr *ngIf="this.autoPopulate.backend.value=='classical'">
+                    <td>{{this.optimizeBackend.efOutput.length-2}}</td>
+                    <td>{{this.optimizeBackend.efOptimizedOutput[0]}}</td>
+                    <td>{{this.optimizeBackend.efOptimizedOutput[2]}}</td>
+                  </tr>
+                  <tr *ngIf="this.autoPopulate.backend.value=='quantum'">
+                    <td>{{this.optimizeBackend.efOutput.length-2}}</td>
+                    <td>{{this.optimizeBackend.efQuantumOptimizedOutput[0]}}</td>
+                    <td>{{this.optimizeBackend.efQuantumOptimizedOutput[3]}}</td>
+                  </tr>
+                  <tr *ngIf="this.autoPopulate.backend.value=='both'">
+                    <td>{{this.optimizeBackend.efOutput.length-2}}</td>
+                    <td>{{this.optimizeBackend.efOptimizedOutput[0]}}</td>
+                    <td>{{this.optimizeBackend.efOptimizedOutput[2]}}</td>
+                  </tr>
+                  <tr *ngIf="this.autoPopulate.backend.value=='both'">
+                    <td>{{this.optimizeBackend.efOutput.length-1}}</td>
+                    <td>{{this.optimizeBackend.efQuantumOptimizedOutput[0]}}</td>
+                    <td>{{this.optimizeBackend.efQuantumOptimizedOutput[3]}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              </div>
+          </mat-tab>
+      </mat-tab-group>
+  </div>
+</div>

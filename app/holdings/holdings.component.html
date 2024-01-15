@@ -1,0 +1,103 @@
+<div class="card">
+  <div class="card-body pb-1" [formGroup]="form">
+    <div class="row form-group">
+      <div class="col-3">
+        <label for="investment_amount" class="form-label font-weight-bold">Investment Amount<span
+            class="text-danger">*</span></label>
+        <input formControlName="investment_amount" type="number" class="form-control"
+          (keyup)="investment_amount();CalculateLeftAmount(form.controls['investment_amount'].value)" />
+
+        <div
+          *ngIf="form.get('investment_amount').invalid && (form.get('investment_amount').dirty || form.get('investment_amount').touched)"
+          class="text-danger">
+          <div *ngIf="form.get('investment_amount').errors?.['required']">
+            Investment Amount is required.
+          </div>
+        </div>
+
+        <div *ngIf="invalidInvestment" class="text-danger">
+          Investment Amount cannot be less than 0
+        </div>
+      </div>
+      <div class="col-3">
+        <!-- <label for="tenure" class="form-label font-weight-bold">Tenure (Months)<span
+            class="text-danger">*</span></label>
+        <input formControlName="tenure" type="number" class="form-control" /> -->
+        <div class="col">
+          <label class="col-form-label font-weight-bold">Start Date</label>
+          <input type="date" class="form-control dropdown-gray" formControlName="start_time" placeholder="" required>
+        </div>
+        
+        <!-- <div *ngIf="form.get('tenure').invalid && (form.get('tenure').dirty || form.get('tenure').touched)"
+          class="text-danger">
+          <div *ngIf="form.get('tenure').errors?.['required']">
+            Tenure is required.
+          </div>
+        </div> -->
+      </div>
+      <div class="col-3">
+      
+        <label class="col-form-label font-weight-bold">End Date</label>
+        <input type="date" class="form-control dropdown-gray" formControlName="end_time" placeholder="" required>
+
+      </div>
+      <div class="col-3">
+        <label for="LeftAmount" class="form-label font-weight-bold">Left Amount</label>
+        <p>{{leftAmount}}</p>
+      </div>
+    </div>
+    <div class="row form-group">
+      <div class="table-responsive">
+        <div class="cont" style="margin-top: 5%">
+          <table class="table table-bordered table-hover">
+            <thead class="table-active">
+              <tr>
+                <th class="col-2">Stock Ticker</th>
+                <th class="col-3">Current Price</th>
+                <th class="col-3">Volume</th>
+                <th class="col-2">Total Price</th>
+                <th class="col-2"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container formArrayName="stockHoldings">
+                <tr *ngFor="let holdingForm of stockHoldings.controls; let i=index" [formGroup]="holdingForm">
+                  <td><input formControlName="StockTicker" (focusout)="calculatePrice(i)"
+                      (click)="clickedArray($event);" (keyup)="autoComplete(i,$event);calculatePrice(i)"
+                      class="form-control" id="autoComplete" (change)="addStock(i,$event);autoComplete($event)"
+                      list="autocompletestock">
+                    <datalist *ngIf="clicked" id="autocompletestock">
+                      <option *ngFor="let ticker of stockList" [value]="ticker">
+                        {{ticker}}
+                      </option>
+                    </datalist>
+                  </td>
+                  <td><input type="number" class="form-control" formControlName="CurrentPrice" size="4" disabled>
+                  </td>
+                  <td><input type="number"
+                      (keyup)="calculatePrice(i);CalculateLeftAmount(form.controls['investment_amount'].value);"
+                      (change)="calculatePrice(i);CalculateLeftAmount(form.controls['investment_amount'].value);"
+                      class="form-control" formControlName="Volume" size="2"></td>
+                  <td><input type="text" class="form-control" formControlName="Amount" size="4" disabled></td>
+                  <td (click)="deleteHolding(i);CalculateLeftAmount(form.controls['investment_amount'].value)"><i
+                      class="fa fa-trash fa-2x"></i></td>
+                </tr>
+                <tr>
+                  <td (click)="addHolding()">
+                    <i class="fa fa-plus fa-2x"></i>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="row mt-2  ">
+      <div *ngIf="!form.invalid" class="col-12" style="text-align: center;">
+        <button type="button" class="btn btn-primary" (click)="submitHolding(form)">Analyze</button>
+      </div>
+    </div> -->
+  </div>
+
+</div>

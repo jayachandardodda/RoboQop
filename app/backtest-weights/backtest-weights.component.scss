@@ -1,0 +1,85 @@
+.result-container {
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 250px;
+  color: #ffffff;
+}
+
+.mat-tab-group {
+  flex: 1;
+}
+
+.mat-tab-body-content {
+  padding: 16px;
+}
+
+.mat-tab-body-wrapper {
+  height: calc(100% - 48px);
+  /* Subtract the height of tab headers */
+}
+
+.active {
+  background-color: #283593;
+}
+
+.table-content {
+  margin: 20px;
+  /* Increase the margin around the table */
+}
+
+.dummy-table {
+  width: 100%;
+  /* Set the width of the table to 100% */
+  border-collapse: collapse;
+  /* Collapse the borders between table cells */
+}
+
+.dummy-table th,
+.dummy-table td {
+  padding: 10px;
+  /* Increase the padding inside table cells */
+  text-align: center;
+  /* Center align the content in table cells */
+}
+
+.table-content {
+  margin: 40px;
+  /* Increase the margin around the table */
+}
+
+.dummy-table {
+  width: 100%;
+  /* Set the width of the table to 100% */
+  border-collapse: collapse;
+  /* Collapse the borders between table cells */
+}
+
+.dummy-table th,
+.dummy-table td {
+  padding: 15px;
+  /* Increase the padding inside table cells */
+  text-align: center;
+  /* Center align the content in table cells */
+  font-size: 16px;
+  /* Increase the font size of the table cells */
+}
+
+.container-class {
+display: flex;
+}
+
+.left, .right {
+flex: 1;
+}
+
+.no-margin{
+margin-top: 0;
+}
+
+.add-margin {
+margin-left: 30%;
+}

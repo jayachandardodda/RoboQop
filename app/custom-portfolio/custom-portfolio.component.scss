@@ -1,0 +1,8 @@
+.p-calendar:not(.width-auto){
+    width: 100% !important;
+}
+
+.card{
+    max-height: calc(100vh - 56px); /* Subtract the navbar height */
+    overflow-y: auto;
+}

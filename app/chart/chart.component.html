@@ -1,0 +1,363 @@
+<div class="card py-1" style="width: 99% !important" [class.backtest-progress]="isCursorLoading">
+  <div class="container" style="width: 99% !important">
+    <mat-tab-group>
+      <mat-tab label="Line Chart">
+        <!-- <div>
+                  <h3 class="marg0 text-center">Line Chart</h3>
+                </div> -->
+        <div>
+          <google-chart id="line" [type]="lineChartData.type" [data]="lineChartData.data"
+            [columns]="lineChartData.columnNames" [options]="lineChartData.options">
+          </google-chart>
+        </div>
+      </mat-tab>
+      <mat-tab label="Pie Chart">
+        <div class="row">
+          <div class="col">
+            <!-- <div>
+                      <h3 style="color:black;margin-left:13%;">Pie Chart</h3>
+                    </div> -->
+            <google-chart #chart [type]="pieChartData.type" [data]="pieChartData.data" [options]="pieChartData.options"
+              [width]="pieChartData.width" [height]="pieChartData.height">
+            </google-chart>
+          </div>
+          <div class="col" *ngIf="efficientFrontier">
+            <!-- <div>
+              <h3 style="color:black;margin-left:13%;">
+                Efficient Frontier
+                <span>&nbsp;&nbsp;<i class="fa fa-question-circle"
+                    ngbTooltip="This is the tooltip text for efficientFrontier" placement="bottom" container="body"
+                    id="eftoolTip"></i></span>
+              </h3>
+            </div> -->
+            <google-chart #chart [type]="scatterChartData.type" [data]="scatterChartData.data"
+              [columns]="scatterChartData.columns" [options]="scatterChartData.options" [width]="scatterChartData.width"
+              [height]="scatterChartData.height">
+            </google-chart>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="Portfolio Metrics">
+        <table class="table align-middle bg-white table-bordered">
+          <thead class="bg-light">
+            <tr>
+              <th *ngFor="let col of holdingDetailsFields" class="font-size-custom">
+                {{col.header}}
+              </th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let row of holdingsData">
+              <td *ngFor="let col of holdingDetailsFields">
+                {{row[col.field]}}
+              </td>
+            </tr>
+
+          </tbody>
+        </table>
+      </mat-tab>
+    </mat-tab-group>
+    <!-- <h1 class="text-center" style="color: black;">Portfolio Report</h1> -->
+
+
+    <!-- <table class="table bg-white table-bordered">
+      <thead class="bg-light">
+        <th class="font-size-custom text-center">Initial Bal.</th>
+        <th class="font-size-custom text-center">Final Bal.</th>
+        <th class="font-size-custom text-center">CAGR</th>
+        <th class="font-size-custom text-center">Annual Return</th>
+        <th class="font-size-custom text-center">Annual Volatility</th>
+        <th class="font-size-custom text-center">Max Loss</th>
+        <th class="font-size-custom text-center">Max Drawdown</th>
+        <th class="font-size-custom text-center">Sharpe</th>
+      </thead>
+      <tbody>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+        <td class="font-size-custom text-center">NA</td>
+      </tbody>
+    </table>
+    <br>
+    <br>
+    <div>
+      <h3 class="marg0 text-center">Portfolio Growth</h3>
+    </div>
+    <div>
+      <google-chart id="line" [type]="lineChartData.type" [data]="lineChartData.data"
+        [columns]="lineChartData.columnNames" [options]="lineChartData.options">
+      </google-chart>
+    </div>
+    <br>
+    <br>
+    <div class="row">
+      <div class="col">
+        <div>
+          <h3 style="color:black;margin-left:13%;">Portfolio Allocation</h3>
+        </div>
+        <google-chart #chart [type]="pieChartData.type" [data]="pieChartData.data" [options]="pieChartData.options"
+          [width]="pieChartData.width" [height]="pieChartData.height">
+        </google-chart>
+      </div>
+      <div class="col" *ngIf="efficientFrontier">
+        <div>
+          <h3 style="color:black;margin-left:13%;">
+            Efficient Frontier
+            <span>&nbsp;&nbsp;<i class="fa fa-question-circle"
+                ngbTooltip="This is the tooltip text for efficientFrontier" placement="bottom" container="body"
+                id="eftoolTip"></i></span>
+          </h3>
+        </div>
+        <google-chart #chart [type]="scatterChartData.type" [data]="scatterChartData.data"
+          [columns]="scatterChartData.columns" [options]="scatterChartData.options" [width]="scatterChartData.width"
+          [height]="scatterChartData.height">
+        </google-chart>
+      </div>
+    </div> -->
+
+    <form [formGroup]="optimize" class="form form-register">
+      <div *ngIf="portfolioType == 'scratch'" class="form-check form-switch mx-auto">
+        <input class="form-check-input" type="checkbox" id="optimization" (change)="optimizationRequired($event)"
+          [checked]="optimization === true">&nbsp;
+        <label class="form-check-label font-weight-bold" for="flexSwitchCheckChecked">Portfolio Optimization</label>
+      </div>
+      <br>
+      <div *ngIf="optimization">
+        <div class="row mx-auto">
+          <div class="col">
+            <label for="backend" class="col-form-label font-weight-bold">Backend</label>
+            <select (change)="backEnd($event)" formGroupName="backend" class="form-control" required>
+              <option *ngFor="let data of backend" [ngValue]="data">{{data}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <label for="strategy" class="col-form-label font-weight-bold">Strategy</label>
+            <select (change)="optimizeStrategy($event)" formGroupName="strategy" class="form-control" required>
+              <option *ngFor="let data of strategy" [ngValue]="data">{{data}}</option>
+            </select>
+          </div>
+
+
+          <!--<div class ="row">
+            <form  [formGroup]="optimize[backTesting]">
+                <div class="row">
+                  <div class="col-6">
+                    <div class="form-group row">
+                      <label class="col-3 col-form-label font-weight-bold">Start Time:</label>
+                      <div class="col-5">
+                        <input type="date" class="form-control dropdown-gray" formControlName="start_time" placeholder=""
+                          required>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div class="form-group row">
+                      <label class="col-3 col-form-label font-weight-bold">End Time:</label>
+                      <div class="col-5">
+                        <input type="date" class="form-control dropdown-gray" formControlName="end_time" placeholder=""
+                          required>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </form>
+          </div>-->
+        </div>
+        <br>
+        <div *ngIf="showOptimizeTarget" class="row mx-auto">
+          <div class="col">
+            <label for="backend" class="col-form-label font-weight-bold"> Optimise Target</label>
+            <select (change)="optimizeTarget($event)" formGroupName="targetSolution" class="form-control" required>
+              <option *ngFor="let data of targetSolution" [ngValue]="data">{{data}}</option>
+            </select>
+          </div>
+          <div class="col">
+            <div *ngIf="optimize.get('targetSolution').value == targetSolution[0]; else elseif1">
+              <div class="form-range">
+                <label for="customRange" class="form-label" style="margin-top:30px;">Risk Aversion</label>
+                <ngx-slider formControlName="lambdaInput" [options]="options"
+                  style="margin-left: 30px; margin-top:20px; width:320px"></ngx-slider>
+                <!--<input type="number" min="0" max="100" formControlName="lambdaInput">-->
+                <!--<ngx-slider [(ngModel)]="lambdaValue" [options]="options" style="margin-left: 30px; margin-top:20px; width:320px"></ngx-slider>-->
+                <!--<input  type="range" min="0" max="100" [(ngModel)]="lambdaValue" formControlName="lambdaSlider" id="customRange">-->
+                <!--<input type="number" min="0" max="100" [(ngModel)]="lambdaValue" formControlName="lambdaInput" >-->
+                <!--<input type="number" min="0" max="100" (input)="lambdaValue = $event.target.value" formControlName="lambdaInput">-->
+
+              </div>
+            </div>
+            <div #elseif1 *ngIf="optimize.get('targetSolution').value == targetSolution[3];else elseif2">
+              <div class="form-range">
+                <label for="customRange1" class="form-label" style="margin-top:30px;">Target Risk</label>
+                <ngx-slider formControlName="targetRiskInput" [options]="options"
+                  style="margin-left: 30px; margin-top:20px; width:320px"></ngx-slider>
+              </div>
+            </div>
+            <div #elseif2 *ngIf="optimize.get('targetSolution').value == targetSolution[4]">
+              <div class="form-range">
+                <label for="customRange2" class="form-label" style="margin-top:30px;">Target Returns</label>
+                <ngx-slider formControlName="targetReturnsInput" [options]="options"
+                  style="margin-left: 30px; margin-top:20px; width:320px"></ngx-slider>
+              </div>
+            </div>
+          </div>
+        </div>
+        <br>
+        <div class="row mx-auto">
+          <div class="col-6">
+            <label for="cardinality" class="col-form-label font-weight-bold">Cardinality</label>
+            <input type="number" class="form-control" id="cardinality" formControlName="cardinality">
+            <!-- {{ optimize.get('cardinality')?.value }} -->
+          </div>
+        </div>
+        <br>
+        <div *ngIf="showInvestorView" class="mx-auto form-check form-switch">
+          <input class="form-check-input" type="checkbox" id="investorsViewId"
+            (change)="investorsViewChanged($event)">&nbsp;
+          <label class="form-check-label font-weight-bold" for="investorsViewId">Add Investor Views</label>
+        </div>
+        <br>
+        <div *ngIf="enableInvestorsView" class="row mx-auto">
+          <div class="col">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th class="col">Outperforming Assets</th>
+                  <th class="col">Underperforming Assests</th>
+                  <th class="col">By % returns</th>
+                  <th class="col">Confidence</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container formArrayName="investors_views">
+                  <tr *ngFor="let holdingForm of investorsViews.controls; let i=index" [formGroup]="holdingForm">
+                    <td>
+                      <!-- <select (change)="outPerformingAssetsEvent(i,$event)" formArrayName="outperforming_asset" class="form-control"  required>
+                      <option value="">Choose Option</option>
+                      <option *ngFor="let data of selected_assests" [ngValue]="data">{{data}}</option>
+                      </select>                     -->
+
+                      <p-multiSelect [options]="selected_stocks" formControlName="outperforming_asset"
+                        optionLabel="name" [filter]="false" defaultLabel="Choose Option" [style]="{'width':'100%'}"
+                        [panelStyle]="{'width':'100%'} "></p-multiSelect>
+                    </td>
+                    <td>
+                      <p-multiSelect [options]="selected_stocks" formControlName="underperforming_asset"
+                        optionLabel="name" [filter]="false" defaultLabel="Choose Option" [style]="{'width':'100%'}"
+                        [panelStyle]="{'width':'100%'} "></p-multiSelect>
+                    </td>
+                    <td><input type="number" class="form-control" formControlName="by" size="4"></td>
+                    <td><input type="number" class="form-control" formControlName="confidence" size="4"></td>
+                    <td (click)="deleteHolding(i);CalculateLeftAmount(form.controls['investment_amount'].value)"><i
+                        class="fa fa-trash fa-2x"></i></td>
+                  </tr>
+                  <tr>
+                    <td (click)="addHolding()">
+                      <i class="fa fa-plus fa-2x col-3"></i>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br>
+        <div formGroupName="backTesting" class="row mx-auto">
+          <label class="col-form-label font-weight-bold" style="margin: top 50px;">Optimisation Period</label>
+          <div class="col">
+            <label class="col-form-label font-weight-bold">Start Time</label>
+            <input type="date" class="form-control dropdown-gray" formControlName="start_time" placeholder="" required>
+          </div>
+
+          <div class="col">
+            <label class="col-form-label font-weight-bold">End Time </label>
+            <input type="date" class="form-control dropdown-gray" formControlName="end_time" placeholder="" required>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="d-flex justify-content-end">
+            <button type="button" id="optimiseButton" class="btn btn-primary"
+              (click)="optimise(optimize)">Optimise</button>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <!-- <br>
+    <br> -->
+
+    <!-- <form [formGroup]="backtestingForm">
+      <div *ngIf="portfolioType == 'model'" class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="backTesting" [checked]="backTesting === true"
+          (change)="backTestingRequired($event)">&nbsp;
+        <label class="form-check-label font-weight-bold" for="flexSwitchCheckChecked">BackTesting
+          Period(Historical
+          Data)</label>
+      </div>
+      <br>
+      <div *ngIf="backTesting">
+        <div class="row">
+          <div class="col-6">
+            <div class="form-group row">
+              <label class="col-3 col-form-label font-weight-bold">Start Time:</label>
+              <div class="col-5">
+                <input type="date" class="form-control dropdown-gray" formControlName="start_time" placeholder=""
+                  required>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-6">
+            <div class="form-group row">
+              <label class="col-3 col-form-label font-weight-bold">End Time:</label>
+              <div class="col-5">
+                <input type="date" class="form-control dropdown-gray" formControlName="end_time" placeholder=""
+                  required>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row d-flex justify-content-start">
+          <button type="button" class="btn btn-primary backtest-progress" id="backtestButton"
+            (click)="onSubmitBacktesting()">Backtest</button>
+        </div>
+        <br>
+      </div>
+    </form> -->
+
+    <!-- <table class="table align-middle bg-white table-bordered">
+      <thead class="bg-light">
+        <tr>
+          <th *ngFor="let col of holdingDetailsFields" class="font-size-custom">
+            {{col.header}}
+          </th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let row of holdingsData">
+          <td *ngFor="let col of holdingDetailsFields">
+            {{row[col.field]}}
+          </td>
+        </tr>
+
+      </tbody>
+    </table> -->
+    <!-- <br>
+    <br>
+    <div class="d-flex justify-content-end">
+      <button *ngIf="portfolioType == 'scratch' && optimize_btn == 0" type="button" class="btn btn-primary"
+        (click)="optimise()">Optimise</button>
+      <button type="button" class="btn btn-primary" (click)="next()">Next</button>
+
+    </div> -->
+  </div>
+</div>
+<!-- <button type="button" class="btn btn-primary" routerLink="/details">Save Holdings</button> -->

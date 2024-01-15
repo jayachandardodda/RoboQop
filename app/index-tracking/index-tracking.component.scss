@@ -1,0 +1,35 @@
+.spinner {
+    position: absolute;
+    top: 49%;
+    left: 49%;
+    z-index: 100;
+}
+
+.card {
+    min-height: 400px !important;
+    max-height: calc(100vh - 56px);
+    /* Subtract the navbar height */
+    overflow-y: auto;
+}
+
+.chart-container {
+    display: hidden;
+    height: 500px;
+    width: 99%;
+}
+
+#pieGraph {
+    height: 500px !important;
+}
+
+.col-form-label {
+    color: black !important;
+}
+
+.card-title {
+    color: black !important;
+}
+
+.stepper-height {
+    min-height: calc(100vh - 60px);
+}

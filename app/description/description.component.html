@@ -1,0 +1,19 @@
+<div class="modal-header align-middle mb-0 bg-light">
+    <h3 class="modal-title" id="modal-basic-title">{{content.portfolioName}}</h3>
+    <i class="fa fa-close" (click)="closeForm()"></i>
+</div>
+<div class="modal-body align-middle mb-0 bg-white">
+    <h5>Risk
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        :{{content.avg_risk}}%
+    </h5>
+    <h5>Return
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{content.avg_returns}}%
+    </h5>
+    <h5>Sharpe Ratio &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:{{content.sharpe_ratio}}</h5>
+    <h5>Minimum Aum &nbsp;&nbsp;&nbsp;&nbsp;:{{content.min_aum}}</h5>
+    <!-- <button class="btn btn-primary" (click)="buyNow()">Buy</button> -->
+    <h4>Description</h4>
+    <hr>
+    <h5>{{content.description}}</h5>
+</div>

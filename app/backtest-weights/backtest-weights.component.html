@@ -1,0 +1,62 @@
+<div class="result-container">
+  <!-- <div class="sidebar mx-2">
+      <p-panelMenu [model]="menuItems" [style]="{ width: '250px' }"></p-panelMenu>
+  </div> -->
+  <div class="main-content mx-2" style="width: 100%;">
+      <mat-tab-group>
+          <mat-tab label="Weights Graph">
+              <div class="container-class">
+                <!-- <div class="dummy-table"></div> -->
+                <div class="left">
+                  <google-chart
+                  title="Portfolio 1"
+                  [type]="myType"
+                  [data]="this.backtestBackend.portfolio1.value"
+                  [width]="width"
+                  [height]="height"
+                  [columns]="columnNames"
+                  [options]="options"> </google-chart>
+                </div>
+                <div class="right">
+                  <google-chart
+                  title="Portfolio 2"
+                  [type]="myType"
+                  [data]="this.backtestBackend.portfolio2.value"
+                  [width]="width"
+                  [height]="height"
+                  [columns]="columnNames"
+                  [options]="options"> </google-chart>
+                </div>
+              </div>
+
+
+                <!-- <div class="dummy-table"></div> -->
+
+
+          </mat-tab>
+          <mat-tab label="Weights Table">
+              <div class="table-content">
+                  <table class="dummy-table table bg-white table-bordered">
+                      <thead>
+                          <tr>
+                              <th>Sr No</th>
+                              <th>Asset</th>
+                              <th *ngIf="this.backtestBackend.metricsTableColumns.value.includes('portfolio1')">Portfolio 1</th>
+                              <th *ngIf="this.backtestBackend.metricsTableColumns.value.includes('portfolio2')">Portfolio 2</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr *ngFor="let weightPortfolio1 of this.backtestBackend.portfolio1.value, let i = index">
+                              <td>{{i+1}}</td>
+                              <td>{{weightPortfolio1[0]}}</td>
+                              <td *ngIf="this.backtestBackend.metricsTableColumns.value.includes('portfolio1')">{{weightPortfolio1[1]}}</td>
+                              <td *ngIf="this.backtestBackend.metricsTableColumns.value.includes('portfolio2')">{{this.backtestBackend.portfolio2.value[i][1]}}</td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </div>
+          </mat-tab>
+      </mat-tab-group>
+  </div>
+</div>
+

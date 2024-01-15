@@ -1,0 +1,21 @@
+<div class="text-center">
+  <h1>Metrics Table</h1>
+<table class="table bg-white table-bordered" style="margin-left: 20%; width: 80%;">
+  <thead class="bg-light">
+    <tr>
+      <th ></th> <!-- Empty cell for the top-left corner -->
+      <th *ngFor="let columnLabel of this.backtestBackend.metricsTableColumns.value" class="font-size-custom">{{ this.backtestBackend.metricsTableColumnsDisplay[columnLabel] }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let rowLabel of this.backtestBackend.metricsTableRows">
+      <th>{{ rowLabel }}</th>
+      <td *ngFor="let columnLabel of this.backtestBackend.metricsTableColumns.value">
+        <!-- Use the rowLabel and columnLabel to access the corresponding data -->
+
+        {{ this.backtestBackend.metricsTable.value[columnLabel][rowLabel] }}
+      </td>
+    </tr>
+  </tbody>
+</table>
+</div>

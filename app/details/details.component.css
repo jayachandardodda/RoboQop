@@ -1,0 +1,18 @@
+.chart-container {
+    height: 500px;
+    width: 90%
+}
+
+#line {
+    width: 100% !important;
+    height: 45vh;
+}
+
+label {
+    color: black !important;
+    font-size: 1.5rem !important;
+}
+
+.font-size-custom {
+    font-size: 15px !important;
+}
