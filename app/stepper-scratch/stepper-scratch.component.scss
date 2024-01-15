@@ -1,0 +1,19 @@
+.mat-horizontal-stepper-header-container {
+    flex-direction: row;
+}
+
+.mat-horizontal-content-container {
+    margin-left: 16px;
+}
+
+.mat-step-header {
+    flex-direction: row;
+}
+
+.mat-horizontal-stepper-header {
+    margin-right: 24px;
+}
+
+.stepper-height {
+    min-height: calc(100vh - 60px);
+}

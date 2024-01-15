@@ -1,0 +1,28 @@
+
+.table-content {
+  margin: 20%;
+  /* Increase the margin around the table */
+}
+
+.dummy-table {
+  width: auto;
+  // /* Set the width of the table to 100% */
+  // border-collapse: collapse;
+
+  /* Collapse the borders between table cells */
+}
+
+.dummy-table th,
+.dummy-table td {
+  border: 1px solid black;
+  padding: 10px;
+  /* Increase the padding inside table cells */
+  text-align: center;
+  /* Center align the content in table cells */
+}
+
+.font-size-custom {
+  font-size: 15px !important;
+}
+
+

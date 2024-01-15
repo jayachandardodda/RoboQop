@@ -1,0 +1,4 @@
+.card{
+    max-height: calc(100vh - 56px); /* Subtract the navbar height */
+    overflow-y: auto;
+}

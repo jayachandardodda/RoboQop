@@ -1,0 +1,95 @@
+<div class="result-container">
+    <!-- <div class="sidebar mx-2">
+        <p-panelMenu [model]="menuItems" [style]="{ width: '250px' }"></p-panelMenu>
+    </div> -->
+    <div class="main-content mx-2" style="width: 100%;">
+        <mat-tab-group>
+            <mat-tab label="Weights Graph">
+                <div class="container-class no-margin" [ngClass]="{'add-margin':this.autoPopulate.addMargin.value}">
+                  <!-- <div class="dummy-table"></div> -->
+                  <div class="left">
+                    <google-chart
+                    [title]="givenWeightsTitle"
+                    [type]="myType"
+                    [data]="this.autoPopulate.givenWeightsData.value"
+                    [width]="width"
+                    [height]="height"
+                    [columns]="columnNames"
+                    [options]="options"> </google-chart>
+                  </div>
+
+                <!-- If Classical Solver is chosen -->
+                <div class="right" *ngIf="this.autoPopulate.backend.value=='classical'">
+                  <google-chart
+                        title="Classical Weights"
+                        [type]="myType"
+                        [data]="this.autoPopulate.optimizedWeightsData.value"
+                        [width]="width"
+                        [height]="height"
+                        [columns]="columnNames"
+                        [options]="options"> </google-chart>
+                </div>
+
+                <!-- If Quantum Solver is Chosen -->
+                <div class="right" *ngIf="this.autoPopulate.backend.value=='quantum'">
+                  <google-chart
+                        title="Quantum Weights"
+                        [type]="myType"
+                        [data]="this.autoPopulate.quantumOptimizedWeightsData.value"
+                        [width]="width"
+                        [height]="height"
+                        [columns]="columnNames"
+                        [options]="options"> </google-chart>
+                </div>
+
+                </div>
+                <div class="table-content container-class no-margin" *ngIf="this.autoPopulate.backend.value=='both'">
+                  <div class="left">
+                    <google-chart
+                          title="Classical Weights"
+                          [type]="myType"
+                          [data]="this.autoPopulate.optimizedWeightsData.value"
+                          [width]="width"
+                          [height]="height"
+                          [columns]="columnNames"
+                          [options]="options"> </google-chart>
+                  </div>
+                  <div class="right">
+                    <google-chart
+                          title="Quantum Weights"
+                          [type]="myType"
+                          [data]="this.autoPopulate.quantumOptimizedWeightsData.value"
+                          [width]="width"
+                          [height]="height"
+                          [columns]="columnNames"
+                          [options]="options"> </google-chart>
+                  </div>
+                </div>
+            </mat-tab>
+            <mat-tab label="Weights Table">
+                <div class="table-content">
+                    <table class="dummy-table table bg-white table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Asset</th>
+                                <th>Given Weights</th>
+                                <th *ngIf="this.autoPopulate.backend.value!='quantum'">Optimized Weights (Classical)</th>
+                                <th *ngIf="this.autoPopulate.backend.value!='classical'">Optimized Weights (Quantum)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let givenWeight of this.autoPopulate.givenWeightsData.value, let i = index">
+                                <td>{{i+1}}</td>
+                                <td>{{givenWeight[0]}}</td>
+                                <td>{{givenWeight[1]}}</td>
+                                <td *ngIf="this.autoPopulate.backend.value!='quantum' && this.autoPopulate.optimizedWeightsData.value[i][1]!=undefined">{{this.autoPopulate.optimizedWeightsData.value[i][1]}}</td>
+                                <td *ngIf="this.autoPopulate.backend.value!='classical' && this.autoPopulate.quantumOptimizedWeightsData.value[i][1]!=undefined">{{this.autoPopulate.quantumOptimizedWeightsData.value[i][1]}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

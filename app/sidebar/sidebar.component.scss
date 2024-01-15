@@ -1,0 +1,25 @@
+.sidenav-container {
+    height: 100%;
+}
+
+.sidebar {
+    width: 64px;
+    transition: width 0.3s;
+}
+
+.sidebar:hover {
+    width: 240px;
+}
+
+.menu-icon {
+    margin-right: 8px;
+    font-size: 24px;
+}
+
+.menu-text {
+    display: none;
+}
+
+.sidebar:hover .menu-text {
+    display: inline;
+}

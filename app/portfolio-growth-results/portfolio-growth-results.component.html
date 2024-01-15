@@ -1,0 +1,49 @@
+<div class="result-container">
+  <!-- <div class="sidebar mx-2">
+      <p-panelMenu [model]="menuItems" [style]="{ width: '250px' }"></p-panelMenu>
+  </div> -->
+  <div class="main-content mx-2 chart-container" style=" height: 50vh;">
+      <mat-tab-group>
+          <mat-tab label="Portfolio Graph">
+            <!-- <google-chart #chart [type]="scatterChartData.type" [data]="scatterChartData.data"
+            [columns]="scatterChartData.columns" [options]="scatterChartData.options" [width]="scatterChartData.width"
+            [height]="scatterChartData.height">
+          </google-chart> -->
+          <google-chart
+            [type]="'LineChart'"
+            [data]="this.optimizeBackend.portfolioGrowthChartData"
+            [height]="height"
+            [width]="width"
+            [columns]="this.optimizeBackend.pgChartColumns"
+            [options]="options"
+
+          ></google-chart>
+          </mat-tab>
+          <!-- <div class="text-center">
+            <table class="table bg-white table-bordered" style="width: 80%;">
+              <thead class="bg-light">
+                <tr>
+                  <th> Sr No</th>
+                  <th>Dates</th>
+                  <th>Classically Optimized</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let point of this.optimizeBackend.portfolioGrowthChartData; let i=index">
+
+                  <td>{{i}}</td>
+                  <td>
+
+                    {{ i }}
+                  </td>
+                  <td>{{ i }}</td>
+                </tr>
+              </tbody>
+            </table>
+            </div> -->
+          <!-- <mat-tab label="Portfolio Table">
+          </mat-tab>-->
+      </mat-tab-group>
+  </div>
+</div>
+

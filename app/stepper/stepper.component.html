@@ -1,0 +1,47 @@
+<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
+    {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
+</button> -->
+
+<mat-stepper [linear]="true" #stepper class="stepper-height" (selectionChange)="setIndex($event)"
+    (click)="triggerClick($event)">
+    <mat-step [completed]="isAtLeastOneChecked" label="Model Portfolio">
+        <form [formGroup]="firstFormGroup">
+            <ng-template matStepLabel>Select Model</ng-template>
+            <app-model-portfolio-list (checkboxChange)="updateNextButtonState()"></app-model-portfolio-list>
+            <div>
+                <br>
+                <button mat-button matStepperNext [disabled]="!isAtLeastOneChecked" class="btn btn-primary"
+                    (click)="onNextClick()">Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [completed]="apiDataLoaded" label="Fill out your address">
+        <form [formGroup]="secondFormGroup">
+            <ng-template matStepLabel (click)="handleMatHeaderClick()">Enter Portfolio Details</ng-template>
+            <app-model-portfolio #modelPortfolio></app-model-portfolio>
+            <div>
+                <br>
+                <button mat-button matStepperPrevious class="btn btn-primary">Back</button>&nbsp;&nbsp;
+                <button mat-button matStepperNext class="btn btn-primary"
+                    [disabled]="!modelPortfolioComponent || !modelPortfolioComponent.form?.valid"
+                    (click)="callOnSubmit()">Submit</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [editable]="false">
+        <ng-template matStepLabel>Portfolio Report</ng-template>
+        <app-chart *ngIf="apiDataLoaded"></app-chart>
+        <div>
+            <br>
+            <button mat-button matStepperPrevious class="btn btn-primary">Back</button>&nbsp;&nbsp;
+            <button mat-button (click)="stepper.reset(); resetStepper()" class="btn btn-primary">Reset</button>
+        </div>
+    </mat-step>
+</mat-stepper>
+<!-- Loader Overlay -->
+<div *ngIf="loaderService.loaderState$ | async" class="loader-overlay">
+    <div class="loader-content">
+        <mat-progress-spinner class="loader-spinner" color="primary" mode="indeterminate"
+            [diameter]="60"></mat-progress-spinner>
+    </div>
+</div>

@@ -1,0 +1,73 @@
+<form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <!-- Email input -->
+    <br>
+    <br>
+    <div class="form-outline mb-3">
+      <label class="form-label" for="userNameInputId">User Name</label>
+      <input formControlName="user_name" type="text" id="userNameInputId" class="form-control" />
+
+    </div>
+
+    <div class="form-outline mb-3">
+        <label class="form-label" for="fullNameInputId">Full Name</label>
+        <input formControlName="full_name" type="text" id="fullNameInputId" class="form-control" />
+  
+      </div>
+    
+      <div class="form-outline mb-3">
+        <label class="form-label" for="emailInputId">Email</label>
+        <input  formControlName="email" type="email" id="emailInputId" class="form-control" />
+        <div *ngIf="Email.invalid && Email && Email.touched then error" ></div>
+        <ng-template #error>        <p class="text-danger">
+            Please enter an valid email
+        </p></ng-template>
+
+      </div>
+
+    <!-- Password input -->
+    <div class="form-outline mb-3">
+      <label class="form-label" for="passwordInputId">Password</label>
+      <input formControlName="password" type="password" id="passwordInputId" class="form-control" />
+
+    </div>
+
+    <!-- 2 column grid layout for inline styling -->
+    <div class="row mb-3">
+      <div class="col d-flex">
+        <!-- Checkbox -->
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="termsInputId" checked />
+          <label class="form-check-label" for="termsInputId"> I agree to privacy policy & terms </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-grid gap-2">
+      <button type="submit" class="btn btn-primary">Sign up</button>
+    </div>
+    <!-- Submit button -->
+    <br>
+
+    <!-- Register buttons -->
+    <div class="text-center">
+      <p>Already have an account?<a href=""> Sign In Instead</a></p>
+      <p>or sign up with:</p>
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="bi bi-facebook"></i>
+      </button>
+
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="bi bi-google"></i>
+      </button>
+
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="bi bi-instagram"></i>
+      </button>
+
+      <button type="button" class="btn btn-link btn-floating mx-1">
+        <i class="bi bi-twitter"></i>
+      </button>
+      <br>
+      <br>
+    </div>
+  </form>

@@ -1,0 +1,49 @@
+.navbar-brand {
+    color: white;
+    text-decoration: none;
+
+}
+/* .sidebar-toggle-button{
+  padding: 3px;
+} */
+
+/* .sticky {
+
+  position: relative;
+
+} */
+
+#clickableAwesomeFont{
+  cursor: pointer
+}
+
+.toggleButton{
+  margin: 5px;
+}
+
+.navbar-brand:hover {
+    color: white;
+}
+
+.profile-class{
+  background-color: #3f51b5 !important;
+  border: none;
+}
+
+.dropdown-class {
+  background-color: #3f51b5;
+  border: 1px solid black;
+  min-width: none;
+  width: 110px !important;
+  --bs-dropdown-min-width: none !important;
+  margin-top: 10px !important;
+}
+
+
+.dropdown-items-class {
+  color: white !important;
+}
+
+.dropdown-items-class:hover {
+  color: #3f51b5 !important;
+}

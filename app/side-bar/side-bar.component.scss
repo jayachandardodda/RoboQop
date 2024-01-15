@@ -1,0 +1,124 @@
+// :host ::ng-deep .ui-panelmenu .ui-panelmenu-header {
+//     cursor: pointer;
+// }
+
+// :host ::ng-deep .ui-panelmenu .ui-panelmenu-content {
+//     overflow: hidden;
+//     height: auto;
+//     transition: max-height 0.3s ease;
+// }
+
+// :host ::ng-deep .ui-panelmenu .ui-panelmenu-content.collapsed {
+//     max-height: 0;
+// }
+
+// :host ::ng-deep .p-menu .p-menuitem-link .p-menuitem-text {
+//   font-size: 0 !important;
+// }
+
+.menu-container{
+  border-radius: 0 !important;
+  border-color: #3f51b5;
+  width: 100% !important;
+  transition: width 0.3s !important;
+  transition-duration: 1000ms;
+  overflow-y: auto
+}
+
+.default-menu-container {
+  height: 100%;
+  min-height: calc(100vh - 56px);
+  // position: fixed !important;
+  justify-content: left !important;
+  background-color: #3f51b5 !important;
+  border-radius: 0 !important;
+  transition: width 0.3s !important;
+  transition-duration: 1000ms;
+  overflow-y: auto
+}
+
+// panel content styles
+:host
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-content {
+    background-color: #3f51b5 !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+// color for menu icons
+:host ::ng-deep .p-panelmenu .p-panelmenu-header .p-menuitem-icon {
+  color: #ffffff !important;
+}
+
+// back ground color for menu
+:host ::ng-deep .p-panelmenu .p-panelmenu-header .p-panelmenu-header-link{
+  background-color: #3f51b5 !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+// border for menu when hover
+:host ::ng-deep .p-panelmenu .p-panelmenu-header .p-panelmenu-header-link:hover{
+  border: solid 1px white !important;
+}
+
+
+// sub menu background
+:host
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-content
+    .p-menuitem
+    .p-menuitem-link {
+    color: #ffffff !important;
+    background-color: #3f51b5 !important;
+    margin: 0 !important;
+
+}
+
+// sub menu border when mouse hovers
+:host
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-content
+    .p-menuitem
+    .p-menuitem-link:hover {
+      border: 1px solid white !important;
+
+}
+
+// sub menu colors
+:host
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-content
+    .p-menuitem
+    .p-menuitem-link
+    .p-menuitem-icon {
+    color: #ffffff !important;
+}
+
+
+// sub menu text color
+:host
+    ::ng-deep
+    .p-panelmenu
+    .p-panelmenu-content
+    .p-menuitem
+    .p-menuitem-link
+    .p-menuitem-text{
+    color: #ffffff !important;
+}
+
+.active-item-class{
+  // background-color: yellow !important;
+  color: red !important;
+  font-weight: bold;
+}
+
+.transition-class {
+  width: 85%;
+  transition: width 0.9s ease-out;
+}

@@ -1,0 +1,576 @@
+<div class="header">
+  <h1>{{this.autoPopulate.optimizationTitle}}</h1>
+  <div>
+    <button class="btn btn-primary" (click)="callonSubmit()" >save</button>
+  </div>
+  
+</div>
+<mat-tab-group [selectedIndex]="tabIndex" (selectedIndexChange)="tabIndexChanged($event)">
+
+  <mat-tab label="Optimization">
+    <div class="my-3 mx-3">
+      <!-- <div class="card-header">
+    <h3 style="text-align: center;" class="text-muted">{{this.autoPopulate.optimizationTitle}}</h3>
+  </div> -->
+      <!-- <span>Use Historical Returns</span> -->
+      <form [formGroup]="OptimizationForm" (ngSubmit)="onSubmit()">
+        <div class="card-body pb-1 col-md-15">
+
+          <div class="row d-flex justify-content-between">
+            <div class="col-6">
+              <label for="portfolioDetails" class="font-weight-bold" >Portfolio Details
+                <span _ngcontent-wrv-c287="" class="text-danger">*</span>
+              </label>
+              <select id="options" required class="custom-dropdown" (change)="onSelectOption($event.target.value)">
+                <option value="option1">Create New</option>
+                <option value="option2">Choose exisiting</option>
+              </select>
+            </div>
+          </div>
+
+      
+
+          <div *ngIf="selectedOption === 'option1'">
+            <div class="row d-flex justify-content-between">
+              <div div _ngcontent-wrv-c287="" class="col-6">
+                <label _ngcontent-wrv-c287="" for="portfolioName"
+                  class="form-label font-weight-bold">Portfolio Name
+                  <span _ngcontent-wrv-c287="" class="text-danger">*</span>
+                </label>
+                <input _ngcontent-wrv-c287="" formControlName="portfolioNameList"
+                type="text" id="portfolioName" class="form-control ng-untouched ng-pristine ng-invalid"
+                ng-reflect-name="OptimizationForm" [ngModel]="''" >
+              </div>
+            </div>
+          </div>
+          
+          <div *ngIf="selectedOption === 'option2'">
+            <div class="row d-flex justify-content-between">
+              <div class="form-group col-6">
+                <label for="portfolioNameList" class="col-form-label font-weight-bold">Portfolio Name
+                    <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Available Portfolios"
+                      aria-label="Specify time period in years or in months"
+                      data-bs-original-title="Specify time period in years or in months"></span>
+                </label>
+                <select (change)="updateStocksTable($event)" formGroupName="portfolioNameList"
+                class="form-control form-select" required>
+                <option *ngFor="let data of this.autoPopulate.portfolioNameList" [ngValue]="data"
+                  [selected]="data === this.autoPopulate.optimizationTitle">{{data}}</option>
+              </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row d-flex justify-content-between"> 
+            <div class="form-group col-6">
+              <label for="stimes" class="col-form-label font-weight-bold">
+                Start Date
+                <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Tracking Start Date" placement="right"
+                    container="body" id="eftoolTip"></i></span>
+              </label>
+              <input type="date" id="stimes" formGroupName="stimes" (change)="Stimes($event)"
+                class="datepicker form-control">
+              <p *ngIf="startDateError" class="alert alert-danger p-1 mt-2" role="alert">
+                Start date cannot be greater than end date.
+              </p>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="etimes" class="col-form-label font-weight-bold">
+                End Date
+                <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Tracking End Date" placement="right"
+                    container="body" id="eftoolTip"></i></span>
+              </label>
+              <input type="date" id="etimes" formGroupName="etimes" (change)="Etimes($event)"
+                class="datepicker form-control">
+              <p *ngIf="endDateError" class="alert alert-danger p-1 mt-2" role="alert">
+                Start date cannot be greater than end date.
+              </p>
+            </div>
+          </div>
+
+
+
+          <div class="row d-flex justify-content-between">
+            <div class="form-group col-6">
+              <label for="OptimizationStartegy" class="col-form-label font-weight-bold">Optimization Strategy
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip"
+                  aria-label="Specify time period in years or in months" ngbTooltip="Optimization Strategy"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <!-- <div class="col-sm-5"> -->
+              <select (change)="OPtimizationStrategy($event)" formGroupName="OptimizationStartegy"
+                class="form-control form-select" required>
+                <option *ngFor="let data of OptimizationStartegy" [ngValue]="data">{{data}}</option>
+              </select>
+              <!-- </div> -->
+            </div>
+
+            <div class="form-group col-6">
+              <label for="defaultOptimizationGoal" class="col-form-label font-weight-bold">Optimization Goal
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip"
+                  ngbTooltip="Goal for chosen Optimization Strategy"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <label *ngIf="this.OptimizationForm.get('defaultOptimizationGoal').value=='Risk Return'"
+                for="riskAversionFactor" class="col-form-label font-weight-bold extra-tooltip">Risk Aversion Factor
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Risk Aversion Factor ∈ [0,1]"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <div class="input-group flex-nowrap">
+                <select (change)="OPtimizationGoal($event)" formGroupName="defaultOptimizationGoal"
+                  class="form-control form-select" required>
+                  <option *ngFor="let data of defaultOptimizationGoal" [ngValue]="data">{{data}}</option>
+                </select>
+                <input *ngIf="specialGoalsArray.includes(this.OptimizationForm.get('defaultOptimizationGoal').value)"
+                  type="number" id="minAssets" min=1 max=100 formControlName="riskAversionFactor" placeholder="Value"
+                  class="datepicker form-control" />
+              </div>
+            </div>
+          </div>
+
+
+          <div
+            *ngIf="this.OptimizationForm.get('OptimizationStartegy').value!='HRP' && this.OptimizationForm.get('OptimizationStartegy').value!='Investor`s View'"
+            class="row d-flex justify-content-between">
+            <div class="form-group col-6">
+              <label for="AssetConstraints" class="col-form-label font-weight-bold">Asset Constraints
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Asset Constraints"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <select (change)="Asset_Constraints($event)" formGroupName="AssetConstraints"
+                class="form-control form-select" required>
+                <option *ngFor="let data of AssetConstraints" [ngValue]="data">{{data}}</option>
+              </select>
+            </div>
+            <div class="form-group col-6">
+              <label for="groupConstraints" class="col-form-label font-weight-bold">Group Constraints
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Group Constraints"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <select (change)="Group_Constraints($event)" formGroupName="groupConstraints"
+                class="form-control form-select" required>
+                <option *ngFor="let data of groupConstraints" [ngValue]="data">{{data}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div *ngIf="this.OptimizationForm.get('OptimizationStartegy').value!='HRP'"
+            class="row d-flex justify-content-between">
+            <div class="form-group col-6">
+              <label for="minAssets" class="col-form-label font-weight-bold">
+                Minimum Assets
+                <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Minimum number of assets to include"
+                    placement="right" container="body" id="eftoolTip"></i></span>
+              </label>
+              <input type="number" id="minAssets" formGroupName="minAssets" (change)="MinAssets($event)" min="1"
+                max="100" value="None" placeholder="None" class="datepicker form-control">
+              <p *ngIf="minAssetsError" class="alert alert-danger p-1 mt-2" role="alert">
+                Minimum Number of Assets cannot exceed the nmber of stocks added
+              </p>
+            </div>
+            <div class="form-group col-6">
+              <label for="maxAssets" class="col-form-label font-weight-bold">
+                Maximum Assets
+                <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Maximum number of assets to include"
+                    placement="right" container="body" id="eftoolTip"></i></span>
+              </label>
+              <input type="number" id="maxAssets" formGroupName="maxAssets" (change)="MaxAssets($event)" min="1"
+                max="100" value="None" placeholder="None" class="datepicker form-control">
+              <p *ngIf="maxAssetsError" class="alert alert-danger p-1 mt-2" role="alert">
+                Maximum Number of Assets cannot exceed the nmber of stocks added
+              </p>
+            </div>
+          </div>
+
+
+
+
+
+          <div class="row d-flex justify-content-between">
+            <div *ngIf="this.OptimizationForm.get('OptimizationStartegy').value=='HRP'" class="form-group col-6">
+              <label for="totalAssets" class="col-form-label font-weight-bold">
+                Total Assets
+                <span>&nbsp;&nbsp;<i class="fa fa fa-info-circle" ngbTooltip="Total number of assets to include"
+                    placement="right" container="body" id="eftoolTip"></i></span>
+              </label>
+              <input type="number" id="totalAssets" formGroupName="totalAssets" (change)="TotalAssets($event)" min="1"
+                max="100" value="1" class="datepicker form-control">
+            </div>
+
+            <div class="form-group col-6">
+              <label for="solverType" class="col-form-label font-weight-bold">Solver Type
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="classical, quantum or both "
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+
+              <select (change)="chooseSolver($event)" formGroupName="solverType" class="form-control form-select"
+                required>
+                <option *ngFor="let data of solverType" [ngValue]="data">{{data}}</option>
+              </select>
+            </div>
+
+            <div class="form-group col-6">
+              <label for="benchmarks" class="col-form-label font-weight-bold">Benchmarks
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Benchmark"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <div class="input-group flex-nowrap">
+                <select (change)="benchmarkFunction($event)" formGroupName="benchmarks" class="form-control form-select"
+                  formControlName="Benchmark" required>
+                  <option *ngFor="let data of benchmarks" [ngValue]="data">{{data}}</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div
+            *ngIf="this.OptimizationForm.get('OptimizationStartegy').value=='CVAR' || this.OptimizationForm.get('OptimizationStartegy').value=='CDAR'"
+            class="row d-flex justify-content-between">
+            <div class="form-group col-6">
+              <label for="benchmarks" class="col-form-label font-weight-bold">Confidence
+                <span class="fa fa-info-circle" data-bs-toggle="tooltip" ngbTooltip="Benchmark"
+                  aria-label="Specify time period in years or in months"
+                  data-bs-original-title="Specify time period in years or in months"></span>
+              </label>
+              <div class="input-group flex-nowrap">
+                <input type="number" min=0 max=1 formControlName="confidence" class="form-control" placeholder="0.95">
+              </div>
+            </div>
+          </div>
+
+
+          <div class="form-check form-switch mx-auto" style="padding: 0;">
+            <label class="form-check-label font-weight-bold" for="flexSwitchCheckChecked">Transaction Limit</label>
+            <input class="form-check-input add-margin" type="checkbox" id="transaction-limit"
+              (change)="toggleTL()">&nbsp;
+          </div>
+
+          <!-- If the chosen strategy is MPT -->
+          <div *ngIf="this.OptimizationForm.get('OptimizationStartegy').value=='MPT'">
+            <!-- <b>Exclude Historical Returns</b>
+
+      <mat-slide-toggle color="#3f51b5" class="add-margin" [checked]="isChecked" (change)="toggle()">
+      </mat-slide-toggle> -->
+
+            <div class="form-check form-switch mx-auto" style="padding: 0;">
+              <label class="form-check-label font-weight-bold" for="flexSwitchCheckChecked">Exclude Historical
+                Returns</label>
+              <input class="form-check-input add-margin" type="checkbox" id="optimization" (change)="toggle()">&nbsp;
+            </div>
+          </div>
+
+
+          <div *ngIf="isChecked || this.OptimizationForm.get('OptimizationStartegy').value=='HRP'">
+            <br>
+            <div *ngIf="isChecked">
+              <input type="checkbox" id="volatility" name="myCheckbox" value="checkboxValue" (change)="useVolatility()">
+              <label for="volatility" class="add-margin"><b>Exclude Volatility</b></label> <br>
+            </div>
+
+            <div *ngIf="isChecked || this.OptimizationForm.get('OptimizationStartegy').value=='HRP'">
+              <input type="checkbox" id="correlations" name="myCheckbox" value="checkboxValue"
+                (change)="useCorrelations()">
+              <label for="correlations" class="add-margin"><b>Exclude Correlations</b></label>
+            </div>
+          </div>
+
+          <div *ngIf="excludeCorrelations" class="mb-3">
+            <label for="formFileSm" class="form-label">Upload Correlations Matrix</label>
+            <input class="form-control form-control-sm" id="formFileSm" type="file" style="width: 20%">
+          </div>
+
+          <div *ngIf="takeTransactionLimit">
+            <br>
+            <label for="transaction-limit">Transaction Limit</label>
+            <input type="number" id="transaction-limit" min="1" max="100" placeholder="Transaction Limit Value"
+              style="width: 20%;" (change)="updateTransactionLimit($event)" class="datepicker form-control" />
+          </div>
+
+          <div *ngIf="takeTransactionLimit" class="row form-group">
+            <div class="table-responsive">
+              <div class="cont" style="margin-top: 5%">
+                <table class="table table-bordered table-hover">
+                  <thead class="table-active">
+                    <tr>
+                      <th class="col-3">Stocks</th>
+                      <th class="col-2">Transactional Weights</th>
+                      <!--th class="col-2">Price</th-->
+                      <th class="col-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container formArrayName="TransactionLimit">
+                      <tr *ngFor="let transactionLimit of TransactionLimit.controls; let i=index"
+                        [formGroup]="transactionLimit">
+                        <td><input formControlName="Stocks" (click)="clickedArrayTL($event);"
+                            (keyup)="autoComplete(i,$event)" class="form-control" id="autoComplete"
+                            (change)="autoComplete($event);" list="autocompletestock">
+                          <datalist *ngIf="clickedTL" id="autocompletestock">
+                            <option *ngFor="let ticker of stockList" [value]="ticker">
+                              {{ticker}}
+                            </option>
+                          </datalist>
+                        </td>
+                        <!-- Allocation -->
+                        <td><input type="number" class="form-control" formControlName="Weights" size="4">
+                        </td>
+                        <td (click)="deleteHoldingTL(i);CalculateLeftAmount(form.controls['investment_amount'].value)">
+                          <i class="fa fa-trash fa-2x"></i>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td (click)="addHoldingTL()">
+                          <i class="fa fa-plus fa-2x"></i>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="row form-group input-group">
+            <div class="table-responsive">
+              <div class="cont" style="margin-top: 5%">
+                <table class="table table-bordered table-hover">
+                  <thead class="table-active">
+                    <tr>
+                      <th class="col-3">Stocks</th>
+                      <th class="col-2">Allocation</th>
+                      <th *ngIf="isChecked" class="col-2">Excpected Return</th>
+                      <th *ngIf="excludeVolatility" class="col-2">Expected Volatility</th>
+                      <!--th class="col-3">Volume</th-->
+                      <th *ngIf="this.OptimizationForm.get('AssetConstraints').value=='Yes'" class="col-2">Min. Weight
+                      </th>
+                      <th *ngIf="this.OptimizationForm.get('AssetConstraints').value=='Yes'" class="col-2">Max. Weight
+                      </th>
+                      <th *ngIf="this.OptimizationForm.get('groupConstraints').value!='No'" class="col-2">Group</th>
+                      <!--th class="col-2">Price</th-->
+                      <th class="col-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container formArrayName="stockHoldings">
+                      <tr *ngFor="let holdingForm of stockHoldings.controls; let i=index" [formGroup]="holdingForm">
+                        <td><input formControlName="stockTicker" (click)="clickedArray($event);"
+                            (keyup)="autoComplete(i,$event);" class="form-control" id="autoComplete"
+                            (change)="addStock(i,$event);" list="autocompletestock">
+                          <datalist *ngIf="clicked" id="autocompletestock">
+                            <option *ngFor="let ticker of stockList" [value]="ticker">
+                              {{ticker}}
+                            </option>
+                          </datalist>
+                        </td>
+                        <!-- Allocation -->
+
+                        <td>
+                          <div class="input-group mb-3"><input type="number" class="form-control"
+                              formControlName="allocation" size="4">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </td>
+
+                        <!-- Expected Return -->
+                        <td *ngIf="isChecked"><input type="number" class="form-control" formControlName="expectedReturn"
+                            size="4">
+                        </td>
+                        <!-- Expected Volatility -->
+                        <td *ngIf="excludeVolatility"><input type="number" class="form-control"
+                            formControlName="expectedVolatility" size="4">
+                        </td>
+                        <td *ngIf="this.OptimizationForm.get('AssetConstraints').value=='Yes'"><input type="number"
+                            (keyup)="calculatePrice(i);CalculateLeftAmount(form.controls['investment_amount'].value);"
+                            (change)="calculatePrice(i);CalculateLeftAmount(form.controls['investment_amount'].value);"
+                            class="form-control" formControlName="lb" size="2"></td>
+                        <td *ngIf="this.OptimizationForm.get('AssetConstraints').value=='Yes'"><input type="text"
+                            class="form-control" formControlName="ub" size="4"></td>
+                        <td *ngIf="this.OptimizationForm.get('groupConstraints').value!='No'">
+                          <select (change)="Group_Constraints($event)" formControlName="group"
+                            class="form-control form-select" required>
+                            <option *ngFor="let data of groupArray" [ngValue]="data"
+                              (change)="console.log('printing from option',event)">{{data}}</option>
+                          </select>
+                        </td>
+                        <td (click)="deleteHolding(i);CalculateLeftAmount(form.controls['investment_amount'].value)"><i
+                            class="fa fa-trash fa-2x"></i></td>
+                      </tr>
+                      <tr>
+                        <td (click)="addHolding()">
+                          <i class="fa fa-plus fa-2x"></i>
+                        </td>
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+
+              <div *ngIf="this.OptimizationForm.get('OptimizationStartegy').value=='Investor`s View'" class="row">
+                <div class="col">
+                  <table class="table table-hover">
+                    <thead class="table-active">
+                      <tr>
+                        <th class="col">Outperforming Assets</th>
+                        <th class="col">Underperforming Assests</th>
+                        <th class="col">By % returns</th>
+                        <th class="col">Confidence</th>
+                        <th class="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <ng-container formArrayName="investors_views">
+                        <tr *ngFor="let holdingForm of investorsViews.controls; let i=index" [formGroup]="holdingForm">
+                        <tr *ngFor="let holdingForm of investorsViews.controls; let i=index" [formGroup]="holdingForm">
+                          <td>
+                            <!-- <select (change)="outPerformingAssetsEvent(i,$event)" formArrayName="outperforming_asset" class="form-control"  required>
+                                      <option value="">Choose Option</option>
+                                      <option *ngFor="let data of selected_assests" [ngValue]="data">{{data}}</option>
+                                      </select>                     -->
+
+                            <p-multiSelect [options]="selected_stocks" formControlName="outperforming_asset"
+                              optionLabel="name" [filter]="false" defaultLabel="Choose Option"></p-multiSelect>
+                          </td>
+                          <td>
+                            <p-multiSelect [options]="selected_stocks" formControlName="underperforming_asset"
+                              optionLabel="name" [filter]="false" defaultLabel="Choose Option"></p-multiSelect>
+                          </td>
+                          <td><input type="number" class="form-control" formControlName="by" size="4"></td>
+                          <td><input type="number" class="form-control" formControlName="confidence" size="4"></td>
+                          <td
+                            (click)="deleteHoldingIV(i);CalculateLeftAmount(form.controls['investment_amount'].value)">
+                            <i class="fa fa-trash fa-2x"></i>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td (click)="addHoldingIV()">
+                            <i class="fa fa-plus fa-2x col-3"></i>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+            </div>
+          </div>
+          <!-- *ngIf="this.OptimizationForm.get('OptimizationStartegy').value=='MPT'" -->
+
+
+
+
+          <div *ngIf="this.OptimizationForm.get('groupConstraints').value!='No'" class="row form-group">
+            <div class="table-responsive">
+              <div class="cont" style="margin-top: 5%">
+                <table class="table table-bordered table-hover">
+                  <thead class="table-active">
+                    <tr>
+                      <th class="col-3">Asset Groups</th>
+                      <th class="col-2">Min Weight</th>
+                      <th class="col-2">Max Weight</th>
+                      <!--th class="col-2">Price</th-->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container>
+                      <tr *ngFor="let rowData of groupTableData; let i = index">
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="text" class="form-control" placeholder="{{rowData.name}}"
+                              aria-label="Recipient's username" aria-describedby="basic-addon2" id="group-name"
+                              [value]="rowData.name" (change)="changeName($event,i)">
+                            <!-- <span class="input-group-text" id="basic-addon2"></span> -->
+                          </div>
+                        </td>
+                        <!-- Allocation -->
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                              id="min-weight" [value]="rowData.lb" (change)="changeLB($event,i)">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </td>
+                        <!-- Expected Return -->
+                        <td>
+                          <div class="input-group mb-3">
+                            <input type="number" class="form-control" aria-label="Amount (to the nearest dollar)"
+                              id="max-weight" [value]="rowData.ub" (change)="changeUB($event,i)">
+                            <span class="input-group-text">%</span>
+                          </div>
+                        </td>
+                        <!-- Expected Volatility -->
+                      </tr>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+
+
+
+          <button (click)='save()' class="btn btn-primary">Optimize</button>
+
+          <button class="btn btn-light">cancel </button>
+          <p *ngIf='savedData'> {{ savedData | json }} </p>
+
+
+
+        </div>
+
+      </form>
+
+      <div class="col-md-3">
+        
+      <!-- {{BacktestForm.value | json}} -->
+      <!-- <p>Value: {{ Benchmark.value }}</p> -->
+      <div class="col-md-3"></div>
+
+    </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="Result">
+    <!-- Graph here -->
+    <div>
+      <div style="float: left;">
+        <app-results-sidebar></app-results-sidebar>
+      </div>
+      <div *ngIf="this.autoPopulate.weightsFlag.value">
+        <app-result></app-result>
+      </div>
+      <div *ngIf="this.autoPopulate.efFlag.value">
+        <app-ef-results></app-ef-results>
+      </div>
+      <div *ngIf="this.autoPopulate.pgFlag.value">
+        <app-portfolio-growth-results></app-portfolio-growth-results>
+      </div>
+      <div *ngIf="this.autoPopulate.mtFlag.value">
+        <app-metrics-table></app-metrics-table>
+      </div>
+      <div *ngIf="this.autoPopulate.ddFlag.value">
+        <app-drawdown></app-drawdown>
+      </div>
+    </div>
+  </mat-tab>
+
+
+</mat-tab-group>
+
+<!-- Loader Overlay -->
+<div *ngIf="loader.loaderState$ | async" class="loader-overlay">
+  <div class="loader-content">
+    <mat-progress-spinner [diameter]="60" class="loader-spinner" color="primary"
+      mode="indeterminate"></mat-progress-spinner>
+  </div>
+</div>

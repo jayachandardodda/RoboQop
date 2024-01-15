@@ -1,0 +1,64 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky">
+  <div class="container-fluid">
+    <!-- <button (click)="this.serv.collapse()" class="toggleButton">
+        <span id='clickableAwesomeFont'><i class="fa fa-bars sidebar-toggle-button"></i></span>
+      </button> -->
+    <a class="navbar-brand" href="#" style="color: white; ">RoboQop</a>
+    <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button> -->
+    <div class="dropdown" *ngIf="showProfile">
+      <button class="btn btn-secondary dropdown-toggle profile-class" type="button" id="dropdownMenuButton"
+        data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <i class="fa fa-user mx-1"></i> Profile
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right dropdown-class" aria-labelledby="dropdownMenuButton">
+        
+        <li><a class="dropdown-item dropdown-items-class" (click)="openPopup()">Help</a></li>
+
+        <li><a class="dropdown-item dropdown-items-class" href="#">Log Out</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="modal" tabindex="-1" role="dialog" [ngStyle]="{'display':displayStyle}">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Portfolio Optimization</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          Portfolio optimization is a process of constructing an investment portfolio that aims to maximize returns
+          while
+          minimizing risks. It involves selecting a mix of assets such as stocks, bonds, commodities, and others, based
+          on various
+          factors including historical performance, expected returns, volatility, correlation, and investor preferences.
+          The goal
+          is to achieve the optimal balance between risk and reward, considering an investor's specific objectives and
+          constraints.
+
+          Here are some key concepts and techniques related to portfolio optimization:
+
+          1. Modern Portfolio Theory (MPT): Developed by Harry Markowitz, MPT is a framework for portfolio construction
+          that
+          considers the trade-off between risk and return. It suggests that by diversifying investments across different
+          assets
+          with uncorrelated or negatively correlated returns, an investor can reduce the overall risk of the portfolio
+          without
+          sacrificing returns.
+
+          2. Efficient Frontier: The efficient frontier represents a set of optimal portfolios that offer the highest
+          expected
+          return for a given level of risk or the lowest risk for a given level of return. It helps investors visualize
+          the
+          possible combinations of assets that provide the most efficient risk-return trade-offs.</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closePopup()">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
