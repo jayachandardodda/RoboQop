@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@types/google.visualization": "^0.0.69",
+    "angular-google-charts": "^2.2.3"
+  }
+}
